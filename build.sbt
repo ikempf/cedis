@@ -7,6 +7,7 @@ lazy val `cats-redis` = (project in file("."))
     libraryDependencies ++= List(
       "org.typelevel" %% "cats-core"   % "1.5.0",
       "org.typelevel" %% "cats-effect" % "1.1.0",
+      "redis.clients" % "jedis"        % "3.0.0",
       "org.scalatest" %% "scalatest"   % "3.0.5" % Test
     ),
     addCompilerPlugin("org.spire-math" %% "kind-projector" % "0.9.8"),
