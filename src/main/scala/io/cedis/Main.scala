@@ -4,6 +4,7 @@ import cats.effect.{ExitCode, IO, IOApp}
 import io.cedis.connection.CedisPool
 import cats.syntax.functor._
 import cats.syntax.apply._
+import io.cedis.commands.Command.Append
 import redis.clients.jedis.{JedisPool, JedisPoolConfig}
 
 object Main extends IOApp {
@@ -18,10 +19,10 @@ object Main extends IOApp {
           .set("key", "value")
           .productR(cedis.append("key", "value2"))
           .productR(cedis.get("key"))
-          .map(a => {
-            throw new RuntimeException("foo")
-            println(a)
-          })
+          .map(println)
+          .productR(cedis.execute(Append("key", "valueExecutor")))
+          .productR(cedis.get("key"))
+          .map(println)
       ))
       .as(ExitCode.Success)
   }

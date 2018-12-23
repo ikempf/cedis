@@ -5,12 +5,12 @@ lazy val `cats-redis` = (project in file("."))
     scalaVersion := "2.12.8",
     scalacOptions += "-Ypartial-unification",
     libraryDependencies ++= List(
-      "org.typelevel" %% "cats-core"   % "1.5.0",
-      "org.typelevel" %% "cats-effect" % "1.1.0",
-      "redis.clients" % "jedis"        % "3.0.0",
-      "org.scalatest" %% "scalatest"   % "3.0.5" % Test
+      "org.typelevel"        %% "cats-core"   % "1.5.0",
+      "org.typelevel"        %% "cats-effect" % "1.1.0",
+      "redis.clients"        % "jedis"        % "3.0.0",
+      "com.github.mpilquist" %% "simulacrum"  % "0.14.0",
+      "org.scalatest"        %% "scalatest"   % "3.0.5" % Test
     ),
-    addCompilerPlugin("org.spire-math" %% "kind-projector" % "0.9.8"),
     scalacOptions ++= List(
       "-target:jvm-1.8",
       "-feature",
@@ -32,4 +32,6 @@ lazy val `cats-redis` = (project in file("."))
       "-Ywarn-unused:privates",
       "-Ywarn-value-discard"
     ),
+    addCompilerPlugin("org.spire-math"  %% "kind-projector" % "0.9.8"),
+    addCompilerPlugin("org.scalamacros" % "paradise"        % "2.1.0" cross CrossVersion.full),
   )

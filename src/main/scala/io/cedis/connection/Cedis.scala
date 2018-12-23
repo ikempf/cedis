@@ -1,11 +1,11 @@
 package io.cedis.connection
 
-import java.{lang, util}
-
 import cats.effect.Sync
+import io.cedis.execute.Executor
 import redis.clients.jedis.{BitOP, Jedis}
 
 import scala.collection.JavaConverters._
+import scala.collection.immutable.Seq
 
 class Cedis[F[_]: Sync] private[connection] (jedis: Jedis) {
 
@@ -15,7 +15,7 @@ class Cedis[F[_]: Sync] private[connection] (jedis: Jedis) {
   def bitcount(key: String): F[Long] =
     Sync[F].delay(jedis.bitcount(key))
 
-  def bitfield(key: String, arguments: String*): F[List[Long]] =
+  def bitfield(key: String, arguments: String*): F[Seq[Long]] =
     Sync[F].delay(jedis.bitfield(key, arguments: _*).asScala.toList.map(Long2long))
 
   def bitop(bitOP: BitOP, key: String, srcKeys: String*): F[Long] =
@@ -51,8 +51,8 @@ class Cedis[F[_]: Sync] private[connection] (jedis: Jedis) {
   def incrByFloat(key: String, value: Double): F[Double] =
     Sync[F].delay(jedis.incrByFloat(key, value))
 
-  def mget(keys: String*): F[util.List[String]] =
-    Sync[F].delay(jedis.mget(keys: _*))
+  def mget(keys: String*): F[Seq[String]] =
+    Sync[F].delay(jedis.mget(keys: _*).asScala.toList)
 
   def mset(keysValues: String*): F[String] =
     Sync[F].delay(jedis.mset(keysValues: _*))
@@ -80,5 +80,8 @@ class Cedis[F[_]: Sync] private[connection] (jedis: Jedis) {
 
   def strlen(key: String): F[Long] =
     Sync[F].delay(jedis.strlen(key))
+
+  def execute[A](cmd: A)(implicit E: Executor[A]): F[E.B] =
+    E.execute(this, cmd)
 
 }

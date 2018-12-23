@@ -1,6 +1,6 @@
 package io.cedis.commands
 
-trait Command
+sealed trait Command
 
 object Command {
   case class Append(key: String, value: String)
@@ -29,8 +29,9 @@ object Command {
   case class Strlen(key: String)
 }
 
+sealed trait BitOp
+
 object Bitop {
-  sealed trait BitOp
   case object And extends BitOp
   case object Or  extends BitOp
   case object Xor extends BitOp
