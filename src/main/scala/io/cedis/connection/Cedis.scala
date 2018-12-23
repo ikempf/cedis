@@ -36,7 +36,7 @@ class Cedis[F[_]: Sync] private[connection] (jedis: Jedis) {
   def getBit(key: String, offset: Long): F[Boolean] =
     Sync[F].delay(jedis.getbit(key, offset))
 
-  def decr(key: String, startOffset: Long, endOffset: Long): F[String] =
+  def getrange(key: String, startOffset: Long, endOffset: Long): F[String] =
     Sync[F].delay(jedis.getrange(key, startOffset, endOffset))
 
   def getSet(key: String, value: String): F[String] =
